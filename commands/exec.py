@@ -2,6 +2,7 @@ import discord
 
 # exec imports
 import os
+import pyautogui
 
 allowed_users = [
     1135951334651207701, # me
@@ -18,7 +19,8 @@ async def run(message: discord.Message, args, client: discord.Client):
         return
 
     code = " ".join(args)
-    exec_globals = {"message": message, "client": client, "discord": discord, "os": os}
+    exec_globals = {"message": message, "client": client, 
+                    "discord": discord, "os": os, "pyautogui": pyautogui}
 
     exec(f"async def __exec():\n" + "\n".join(f"    {line}" for line in code.split("\n")), exec_globals)
     res = await exec_globals["__exec"]()
