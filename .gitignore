@@ -7,6 +7,7 @@ filedb/
 # this stuff will change constantly, no need to have it here
 gens/*-colored.png
 STATS.json
+gml.txt
 
 # random shit here for some reason
 lvel.ogg

@@ -13,7 +13,7 @@ async def run(message: discord.Message, args, client: discord.Client):
         print("denied")
         return
     
-    if message.content.__contains__("token"):
+    if message.content.__contains__("token") or message.content.__contains__("press") or message.content.__contains__("keyDown") or message.content.__contains__("type"):
         await message.reply("fuck off")
         return
 
