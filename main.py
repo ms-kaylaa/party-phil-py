@@ -38,17 +38,21 @@ class MyClient(discord.Client):
 
     async def on_message(self, message: discord.Message):
         print(f'Message from {message.author}: {message.content}')
+        send_content_to_socket = False
         if globals.sock != None and not message.author.bot and message.channel.id in globals.fdtrusteds:
+            send_content_to_socket = True
+        if message.author.bot or not message.content.lower().startswith(prefix): return
+        if random.randint(0, 23) == 9:
+            await message.channel.send("Fuck you! 👎")
+            return
+
+        if send_content_to_socket:
             try:
                 globals.sock.send(f"[{message.author}]: {message.content}",text=True) # commands are done from gamemaker!!   
             except websockets.exceptions.ConnectionClosedError:
                 globals.sock.close()
                 globals.sock = None
                 await message.channel.send("i lost connection to the freeconnect server!")
-        if message.author.bot or not message.content.lower().startswith(prefix): return
-        if random.randint(0, 23) == 9:
-            await message.channel.send("Fuck you! 👎")
-            return
 
         # this is kinda a dumb way to do it
         split = message.content.split(prefix)

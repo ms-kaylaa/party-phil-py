@@ -25,4 +25,5 @@ async def run(message: discord.Message, args: list[str], client: discord.Client 
     if command == "disconnect":
         if globals.sock != None:
             globals.sock.close()
+            globals.sock = None
         await message.reply("Disconnected!")       
