@@ -1,6 +1,6 @@
 import discord
 
-import compileallfixed
+import compileallfixed as compileall
 import importlib
 import os
 
@@ -57,7 +57,7 @@ async def sync(message: discord.Message):
                 commands_dict[name] = importlib.import_module(module_path)
             
             # recompile old commands
-            compiled = compileallfixed.compile_file(os.path.join(root, file), quiet=True) # returns true if it changed and false if it didnt. i had to make this functionality myself. fuck.
+            compiled = compileall.compile_file(os.path.join(root, file), quiet=True) # returns true if it changed and false if it didnt. i had to make this functionality myself. fuck.
             if compiled and valid_command:
                 recompiled+=1
                 await message.channel.send(f"recompiled: {name}")
@@ -79,7 +79,7 @@ async def sync(message: discord.Message):
 
 # probably faster no-output version of sync
 def silentsync():
-    compileallfixed.compile_dir("commands/", quiet=True)
+    compileall.compile_dir("commands/", quiet=True)
     
     # look for and remove commands
     for key, module in list(commands_dict.items()):
