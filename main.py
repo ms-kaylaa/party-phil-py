@@ -6,6 +6,7 @@ import random
 import traceback
 
 import os
+import globals
 
 def read_token():
     f = open("token.txt")
@@ -35,7 +36,8 @@ class MyClient(discord.Client):
 
     async def on_message(self, message: discord.Message):
         print(f'Message from {message.author}: {message.content}')
-
+        if globals.sock != None and not message.author.bot and message.channel.id in globals.fdtrusteds:
+            globals.sock.send(f"[{message.author}]: {message.content}",text=True) # commands are done from gamemaker!!    
         if message.author.bot or not message.content.lower().startswith(prefix): return
         if random.randint(0, 23) == 9:
             await message.channel.send("Fuck you! 👎")
