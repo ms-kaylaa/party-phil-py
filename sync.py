@@ -1,6 +1,6 @@
 import discord
 
-import compileall
+import compileallfixed
 import importlib
 import os
 
