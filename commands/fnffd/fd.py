@@ -1,6 +1,8 @@
 import discord
 import globals
 
+import pyautogui
+
 from websockets.sync.client import connect
 
 async def run(message: discord.Message, args: list[str], client: discord.Client = None):
@@ -9,10 +11,21 @@ async def run(message: discord.Message, args: list[str], client: discord.Client 
 
     if len(args) == 0:
         await message.channel.send(
-"""FREECONNECT24 COMMANDS:\n
-\n
-'connect': Attempt to establish a connection with the FreeConnect24 server running on the host machine. 0 args.\n
-'disconnect': Attempt to close an already existing connection with the FreeConnect24 server running on the host machine. 0 args.""")
+"""**__FREECONNECT24 COMMANDS__**:
+
+**SETUP**
+`connect`: Attempt to establish a connection with the FreeConnect24 server running on the host machine.
+`disconnect`: Attempt to close an already existing connection with the FreeConnect24 server running on the host machine.
+
+**GAMEPLAY**
+`ntsc`: Toggle the NTSC filter in songs.
+`wavey`: (BROKEN) Toggle the wavey effect used in starfire.
+
+`hideui`: Hide the ui note visibility for 7 seconds.
+
+`increasepitch`: Increase the song pitch/speed.
+`decreasepitch`: Decrease the song pitch/speed.
+""")
         return
     command = args[0]
 
@@ -26,4 +39,4 @@ async def run(message: discord.Message, args: list[str], client: discord.Client 
         if globals.sock != None:
             globals.sock.close()
             globals.sock = None
-        await message.reply("Disconnected!")       
+        await message.reply("Disconnected!")    
