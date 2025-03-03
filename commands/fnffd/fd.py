@@ -32,6 +32,7 @@ async def run(message: discord.Message, args: list[str], client: discord.Client 
     if command == "connect":
         if globals.sock != None:
             globals.sock.close()
+        globals.connected_channel_id = message.channel.id
         globals.sock = connect("ws://localhost:25565",ping_interval=None) 
         await message.reply("Connected!")
 
@@ -39,4 +40,5 @@ async def run(message: discord.Message, args: list[str], client: discord.Client 
         if globals.sock != None:
             globals.sock.close()
             globals.sock = None
+            globals.connected_channel_id = 0
         await message.reply("Disconnected!")    

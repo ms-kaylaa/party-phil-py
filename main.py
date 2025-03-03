@@ -38,7 +38,7 @@ class MyClient(discord.Client):
 
     async def on_message(self, message: discord.Message):
         send_content_to_socket = False
-        if globals.sock != None and not message.author.bot and message.channel.id in globals.fdtrusteds:
+        if globals.sock != None and not message.author.bot and globals.connected_channel_id == message.channel.id:
             print("marking content for sending")
             send_content_to_socket = True
         if message.author.bot or (not message.content.lower().startswith(prefix) and not send_content_to_socket): return
