@@ -3,6 +3,7 @@ import discord
 # exec imports
 import os
 import pyautogui
+import pygetwindow as gw
 
 allowed_users = [
     1135951334651207701, # me
@@ -14,13 +15,13 @@ async def run(message: discord.Message, args, client: discord.Client):
         print("denied")
         return
     
-    if message.content.__contains__("token") or message.content.__contains__("press") or message.content.__contains__("keyDown") or message.content.__contains__("type"):
+    if message.content.__contains__("token") : #or message.content.__contains__("press") or message.content.__contains__("keyDown") or message.content.__contains__("type")
         await message.reply("fuck off")
         return
 
     code = " ".join(args)
     exec_globals = {"message": message, "client": client, 
-                    "discord": discord, "os": os, "pyautogui": pyautogui}
+                    "discord": discord, "os": os, "pyautogui": pyautogui, "gw": gw}
 
     exec(f"async def __exec():\n" + "\n".join(f"    {line}" for line in code.split("\n")), exec_globals)
     res = await exec_globals["__exec"]()
