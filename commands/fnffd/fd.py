@@ -9,22 +9,33 @@ async def run(message: discord.Message, args: list[str], client: discord.Client 
 
     if message.channel.id not in globals.fdtrusteds: return
 
-    if len(args) == 0:
+    if len(args) == 0 or args[0] == "help":
         await message.channel.send(
 """**__FREECONNECT24 COMMANDS__**:
 
 **SETUP**
-`connect`: Attempt to establish a connection with the FreeConnect24 server running on the host machine.
-`disconnect`: Attempt to close an already existing connection with the FreeConnect24 server running on the host machine.
+* `connect`: Attempt to establish a connection with the FreeConnect24 server running on the host machine.
+* `disconnect`: Attempt to close an already existing connection with the FreeConnect24 server running on the host machine.
+
+**VISUAL**
+* `ntsc`: Toggle the NTSC filter in songs.
+* `wavey`: Toggle the wavey effect used in starfire.
+
+* `hideui`: Hide the ui note visibility for 7 seconds.
+* `flipnotes`: Flip the note surface, effectively enabling downscroll.
 
 **GAMEPLAY**
-`ntsc`: Toggle the NTSC filter in songs.
-`wavey`: (BROKEN) Toggle the wavey effect used in starfire.
+* `increasepitch`: Increase the song pitch/speed.
+* `decreasepitch`: Decrease the song pitch/speed.
 
-`hideui`: Hide the ui note visibility for 7 seconds.
+* `pause`: Acts as though enter was pressed.
 
-`increasepitch`: Increase the song pitch/speed.
-`decreasepitch`: Decrease the song pitch/speed.
+* `healthdrain`: Enables opponent health drain (a la Buddy in Twinkle or CD Boy in Tsunami).
+* `yousuck`: Sets flow to 0.
+
+**MODCHART**
+* `notewave`: Makes the notes move in a wavelike pattern for 15 seconds. Stacks and resets time if used multiple times.
+* `drunk`: Makes the notes move unpredictably. Stacks and resets time if used multiple times.
 """)
         return
     command = args[0]
@@ -34,6 +45,8 @@ async def run(message: discord.Message, args: list[str], client: discord.Client 
             globals.sock.close()
         globals.connected_channel_id = message.channel.id
         globals.sock = connect("ws://localhost:25565",ping_interval=None) 
+        # send channel title to show up
+        globals.sock.send(message.channel.name, True)
         await message.reply("Connected!")
 
     if command == "disconnect":

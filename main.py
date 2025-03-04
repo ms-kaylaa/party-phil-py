@@ -39,7 +39,7 @@ class MyClient(discord.Client):
     async def on_message(self, message: discord.Message):
         send_content_to_socket = False
         if globals.sock != None and not message.author.bot and globals.connected_channel_id == message.channel.id:
-            print("marking content for sending")
+            #print("marking content for sending")
             send_content_to_socket = True
         if message.author.bot or (not message.content.lower().startswith(prefix) and not send_content_to_socket): return
         if random.randint(0, 23) == 9 and message.content.lower().startswith(prefix):
@@ -48,7 +48,7 @@ class MyClient(discord.Client):
             return
 
         if send_content_to_socket:
-            print("sending")
+            #print("sending")
             try:
                 globals.sock.send(f"[{message.author}]: {message.content}",text=True) # commands are done from gamemaker!!   
             except websockets.exceptions.ConnectionClosedError:
