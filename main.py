@@ -52,7 +52,7 @@ class MyClient(discord.Client):
             auth_roles = message.author.roles
             auth_roles.reverse()
 
-            highest_role_col = "36a595"
+            highest_role_col = "d1d8ff"
             for role in auth_roles:
                 role_col = role.color.__str__()[1:]
                 if role_col != "000000":
