@@ -34,8 +34,8 @@ async def run(message: discord.Message, args: list[str], client: discord.Client 
 * `yousuck`: Sets flow to 0.
 
 **MODCHART**
-* `notewave`: Makes the notes move in a wavelike pattern for 15 seconds. Stacks and resets time if used multiple times.
-* `drunk`: Makes the notes move unpredictably. Stacks and resets time if used multiple times.
+* `notewave`: Makes the notes move in a wavelike pattern for 15 seconds. Stacks and resets timer if used multiple times.
+* `drunk`: Makes the notes move unpredictably. Stacks and resets timer if used multiple times.
 """)
         return
     command = args[0]

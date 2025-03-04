@@ -48,9 +48,19 @@ class MyClient(discord.Client):
             return
 
         if send_content_to_socket:
-            #print("sending")
+            # get highest role color (for chat rendering ingame)
+            auth_roles = message.author.roles
+            auth_roles.reverse()
+
+            highest_role_col = "36a595"
+            for role in auth_roles:
+                role_col = role.color.__str__()[1:]
+                if role_col != "000000":
+                    highest_role_col = role_col
+                    break
+
             try:
-                globals.sock.send(f"[{message.author}]: {message.content}",text=True) # commands are done from gamemaker!!   
+                globals.sock.send(f"{highest_role_col}~[{message.author}]: {message.content}",text=True) # commands are done from gamemaker!!   
             except websockets.exceptions.ConnectionClosedError:
                 globals.sock.close()
                 globals.sock = None
