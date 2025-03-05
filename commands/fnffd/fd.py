@@ -29,9 +29,11 @@ async def run(message: discord.Message, args: list[str], client: discord.Client 
 * `decreasepitch`: Decrease the song pitch/speed.
 
 * `pause`: Acts as though enter was pressed.
+* `randomizebinds`: Randomizes the current keybinds. 10 second cooldown.
 
 * `healthdrain`: Enables opponent health drain (a la Buddy in Twinkle or CD Boy in Tsunami).
 * `yousuck`: Sets flow to 0.
+* `youwin`: Sets flow to 1.
 
 **MODCHART**
 * `notewave`: Makes the notes move in a wavelike pattern for 15 seconds. Stacks and resets timer if used multiple times.

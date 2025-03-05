@@ -1,14 +1,29 @@
 import discord
 
+import globals
 from sync import load_commands, commands_dict
 
-import random
+import asyncio
+
+import time
 import traceback
 
 import os
-import globals
+
+import random
 
 import websockets
+
+async def ping_sock():
+    while True:
+        await asyncio.sleep(0.5)
+        if globals.sock != None:
+            try:
+                globals.sock.send("ping", text=True)
+            except websockets.exceptions.ConnectionClosedError:
+                globals.sock.close()
+                globals.sock = None
+                await client.get_channel(globals.connected_channel_id).send("i lost connection to the freeconnect server!")
 
 def read_token():
     f = open("token.txt")
@@ -32,6 +47,7 @@ prefix = "ph!"
 class MyClient(discord.Client):
     async def on_ready(self):
         print(f'Logged on as {self.user}!')
+        asyncio.create_task(ping_sock())
         await self.change_presence(status=discord.Status.online, activity=discord.Game("Wii Party"))
         load_commands()
         #test_commands(self)
@@ -52,7 +68,7 @@ class MyClient(discord.Client):
             auth_roles = message.author.roles
             auth_roles.reverse()
 
-            highest_role_col = "d1d8ff"
+            highest_role_col = "e8ebff"
             for role in auth_roles:
                 role_col = role.color.__str__()[1:]
                 if role_col != "000000":
@@ -90,4 +106,5 @@ class MyClient(discord.Client):
 intents = discord.Intents.all() # IM LAZY TODO ACTUAL INTENTS
 
 client = MyClient(intents=intents)
+
 client.run(read_token())
