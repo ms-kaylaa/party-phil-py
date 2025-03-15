@@ -19,4 +19,12 @@ def recursive_get_all_files(dir):
 async def run(message: discord.Message, args: list[str], client: discord.Client = None):
     recursive_get_all_files(FILE_DIR)
     
-    await message.reply(file=discord.File(random.choice(file_list)))
+    
+    file = random.choice(file_list)
+    filesplit: list[str] = file.split("/")
+    owner_folder = filesplit[1]
+
+    owner = "unknown"
+    if owner_folder.isdigit():
+        owner = client.get_user(int(owner_folder)).name
+    await message.reply(f"filename: {filesplit[2]} | uploader: {owner}", file=discord.File(file))
