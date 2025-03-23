@@ -12,8 +12,12 @@ class DudeRouletteRoom():
         self.game_started = False
         self.room_members: list[discord.Member] = [self.room_owner]
 
+        # this is a little silly
+        self.del_confirm = False
+
 
 active_rooms: list[DudeRouletteRoom] = []
+running_rooms: list[DudeRouletteRoom] = []
 
 def get_users_current_room(user: discord.Member) -> DudeRouletteRoom:
     for room in active_rooms:
@@ -21,3 +25,13 @@ def get_users_current_room(user: discord.Member) -> DudeRouletteRoom:
             return room
         
     return None
+
+def user_is_in_room(user: discord.Member) -> bool:
+    if get_users_current_room(user) != None:
+        return True
+    return False
+
+allowed_roulette_commands = ["ph!randomdude", "ph!randomlady", "ph!randomfile"]
+async def duderoulette_onmessage(self: discord.Client, message: discord.Message):
+    if user_is_in_room(message.author) and message.content in allowed_roulette_commands:
+        await message.channel.send("Wow. You sure did send that whitelisted command while in a room")

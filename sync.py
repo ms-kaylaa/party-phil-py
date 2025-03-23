@@ -25,6 +25,8 @@ def load_commands():
             commands_dict[name] = importlib.import_module(module_path)
             print(f"loaded: {module_path}")
 
+    print("finished loading commands")
+
 # louder cooler but probably slower
 async def sync(message: discord.Message):
     await message.channel.send("syncing commands...")
@@ -44,7 +46,7 @@ async def sync(message: discord.Message):
             silent = False
             if not file.endswith(".py") or file.startswith("_") or relative_root.endswith("_"):
                 silent = True # mute backend stuff
-                valid_command = False
+                valid_command = not "__pycache__" in relative_root
             
             name = file[:-3]
             module_path = f"commands.{relative_root + '.' if relative_root else ''}{name}"
@@ -58,7 +60,7 @@ async def sync(message: discord.Message):
             
             # recompile old commands
             compiled = compileall.compile_file(os.path.join(root, file), quiet=True) # returns true if it changed and false if it didnt. i had to make this functionality myself. fuck.
-            if compiled and valid_command:
+            if compiled and not silent:
                 recompiled+=1
                 await message.channel.send(f"recompiled: {name}")
     # look for removed commands

@@ -16,20 +16,31 @@ def recursive_get_all_files(dir):
             file_list.append(dir + file)
 
 async def run(message: discord.Message, args: list[str], client: discord.Client = None):
+    global file_list
+
+    file_list.clear()
     recursive_get_all_files(FILE_DIR)
     filename = " ".join(args)
 
-    found_index = -1
+    found_indices: list[str] = []
     for i in range(len(file_list)):
         file = file_list[i]
 
         end = file.split("/").pop()
         if end == filename:
             #await message.channel.send("i found it: " + str(i))
-            found_index = i
-            break
+            print(i, file_list[i])
+            found_indices.append(i)
 
-    if found_index != -1:
-        await message.reply(file=discord.File(file_list[found_index]))
+    if len(found_indices) > 0:
+        if len(found_indices) > 1:
+            await message.reply("i found multiple uploads with that name")
+        for found_index in found_indices:
+            owner_folder = file_list[found_index].split("/")[1]
+
+            owner = "unknown"
+            if owner_folder.isdigit():
+                owner = client.get_user(int(owner_folder)).name
+            await message.reply(f"uploader: {owner}", file=discord.File(file_list[found_index]))
     else:
         await message.reply("i didnt find i t...")
