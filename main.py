@@ -34,11 +34,34 @@ class Phil(discord.Client):
         #test_commands(self)
 
     async def on_message(self, message: discord.Message):
-        if message.author.bot or not message.content.lower().startswith(prefix): return
-        
-        if random.randint(0, 23) == 9: # the one constant of party phil
+        send_content_to_socket = False
+        if globals.sock != None and not message.author.bot and globals.connected_channel_id == message.channel.id:
+            #print("marking content for sending")
+            send_content_to_socket = True
+        if message.author.bot or (not message.content.lower().startswith(prefix) and not send_content_to_socket): return
+        if random.randint(0, 23) == 9 and message.content.lower().startswith(prefix):
             await message.channel.send("Fuck you! 👎")
+            send_content_to_socket = False
             return
+
+        if send_content_to_socket:
+            # get highest role color (for chat rendering ingame)
+            auth_roles = message.author.roles
+            auth_roles.reverse()
+
+            highest_role_col = "e8ebff"
+            for role in auth_roles:
+                role_col = str(role.color)[1:]
+                if role_col != "000000":
+                    highest_role_col = role_col
+                    break
+
+            try:
+                globals.sock.send(f"{highest_role_col}~[{message.author}]: {message.content}",text=True) # commands are done from gamemaker!!   
+            except websockets.exceptions.ConnectionClosedError:
+                globals.sock.close()
+                globals.sock = None
+                await message.channel.send("i lost connection to the freeconnect server!")
         
         await handle_commands(self, message)
         await drhandler.duderoulette_onmessage(self, message)
