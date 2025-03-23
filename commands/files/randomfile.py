@@ -25,6 +25,7 @@ async def run(message: discord.Message, args: list[str], client: discord.Client 
     owner_folder = filesplit[1]
 
     owner = "unknown"
+    print(owner_folder)
     if owner_folder.isdigit():
         owner = client.get_user(int(owner_folder)).name
     await message.reply(f"filename: {filesplit[2]} | uploader: {owner}", file=discord.File(file))
