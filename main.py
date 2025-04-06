@@ -39,7 +39,7 @@ async def handle_commands(self: Phil, message: discord.Message):
         try:
             await commands_dict[command].run(message, args, self)
         except Exception as e:
-            await message.reply("I errors... " + str(e))
+            await message.reply("I errors... `" + str(e)+"`")
             traceback.print_exception(e)
 
 def read_token():
