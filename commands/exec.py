@@ -31,4 +31,4 @@ async def run(message: discord.Message, args, client: discord.Client):
         await message.channel.send(res)
     except Exception as e:
         if str(e) != "400 Bad Request (error code: 50006): Cannot send an empty message": # ignore stuff that doesnt return anything
-            await message.reply("I errors... " + str(e))
+            await message.reply("I errors... `" + str(e)+"`")
