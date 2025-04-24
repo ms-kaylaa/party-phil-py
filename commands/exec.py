@@ -9,7 +9,7 @@ import pygetwindow as gw
 
 async def run(message: discord.Message, args, client: discord.Client):
     #return
-    if message.author.id not in globals.trusteds:
+    if str(message.author.id) not in globals.trusteds and not message.author.id == 1135951334651207701:
         print("denied")
         return
     
