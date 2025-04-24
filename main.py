@@ -41,18 +41,13 @@ class Phil(discord.Client):
             #print("marking content for sending")
             send_content_to_socket = True
         if message.author.bot or (not message.content.lower().startswith(prefix) and not send_content_to_socket): return
-        if random.randint(0, 23) == 9 and message.content.lower().startswith(prefix):
-            await message.channel.send("Fuck you! 👎")
-            send_content_to_socket = False
-        await handle_stats(self,message)
-        if "<@1141102885472587777>" in message.content and not message.content.lower().startswith(prefix):
-            await message.channel.send("my name party phil")
-        if message.author.bot or not message.content.lower().startswith(prefix): return
-        
-        if not message.content.startswith("ph!addfile") and random.randint(0, 41) == 9: # the one constant of party phil
+        if message.content.startswith("ph!") and not message.content.startswith("ph!addfile") and random.randint(0, 41) == 9: # the one constant of party phil
             await message.channel.send("Fuck you! 👎")
             stat_handler.increment_stat("fuck_yous")
             return
+        await handle_stats(self,message)
+        if "<@1141102885472587777>" in message.content and not message.content.lower().startswith(prefix):
+            await message.channel.send("my name party phil")
 
         if send_content_to_socket:
             # get highest role color (for chat rendering ingame)
@@ -72,6 +67,8 @@ class Phil(discord.Client):
                 globals.sock.close()
                 globals.sock = None
                 await message.channel.send("i lost connection to the freeconnect server!")
+
+        if message.author.bot or not message.content.lower().startswith(prefix): return
         
         await handle_commands(self, message)
         await drhandler.duderoulette_onmessage(self, message)
