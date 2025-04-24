@@ -11,11 +11,12 @@ async def run(message: discord.Message, args: list[str], client: discord.Client 
     attach = message.attachments
 
     if len(attach) == 0:
-        await message.reply("temp reply (you need to attach shit)")
+        await message.reply("You need to attach something. I dont know what you expected from me")
         return
     
     filename = " ".join(args)
+    print(attach[0].size)
 
     await attach[0].save(userdir + filename)
-    await message.channel.send(f"temp success (saved {filename})")
+    await message.channel.send(f"Saved as {filename}")
     await message.delete()

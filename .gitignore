@@ -3,6 +3,7 @@ token.txt
 
 # i dont need user data in this repository
 filedb/
+trustedusers.txt
 
 # this stuff will change constantly, no need to have it here
 gens/*-colored.png
