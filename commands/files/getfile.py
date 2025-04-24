@@ -3,6 +3,7 @@ import discord
 import os
 
 from globals import FILE_DIR
+import stat_handler
 
 file_list: list[str] = []
 def recursive_get_all_files(dir):
@@ -33,14 +34,17 @@ async def run(message: discord.Message, args: list[str], client: discord.Client 
             found_indices.append(i)
 
     if len(found_indices) > 0:
+        stat_handler.stats["command_stats"]["files_gotten"] += 1
         if len(found_indices) > 1:
             await message.reply("i found multiple uploads with that name")
         for found_index in found_indices:
             owner_folder = file_list[found_index].split("/")[1]
 
             owner = "unknown"
+            owner_attr = "unknown"
             if owner_folder.isdigit():
-                owner = client.get_user(int(owner_folder)).name
-            await message.reply(f"uploader: {owner}", file=discord.File(file_list[found_index]))
+                owner = client.get_user(int(owner_folder))
+                owner_attr = f"{owner.display_name} ({owner.name})"
+            await message.reply(f"uploader: {owner_attr}", file=discord.File(file_list[found_index]))
     else:
         await message.reply("i didnt find i t...")

@@ -1,17 +1,15 @@
 import discord
 
+import globals
+
 # exec imports
 import os
 import pyautogui
 import pygetwindow as gw
 
-allowed_users = [
-    1135951334651207701, # me
-    587298000439869463, # hexose
-    605229752995020800 # jc
-]
 async def run(message: discord.Message, args, client: discord.Client):
-    if message.author.id not in allowed_users:
+    #return
+    if message.author.id not in globals.trusteds:
         print("denied")
         return
     
