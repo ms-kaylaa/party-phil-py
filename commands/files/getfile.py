@@ -23,11 +23,16 @@ async def run(message: discord.Message, args: list[str], client: discord.Client 
     recursive_get_all_files(FILE_DIR)
     filename = " ".join(args)
 
+    wildcard = len(filename.split(".")) == 1
+
+
     found_indices: list[str] = []
     for i in range(len(file_list)):
         file = file_list[i]
 
         end = file.split("/").pop()
+        if wildcard:
+            end = end.split(".")[0]
         if end == filename:
             #await message.channel.send("i found it: " + str(i))
             print(i, file_list[i])
@@ -45,6 +50,10 @@ async def run(message: discord.Message, args: list[str], client: discord.Client 
             if owner_folder.isdigit():
                 owner = client.get_user(int(owner_folder))
                 owner_attr = f"{owner.display_name} ({owner.name})"
-            await message.reply(f"uploader: {owner_attr}", file=discord.File(file_list[found_index]))
+
+            attrstr = f"uploader: {owner_attr}"
+            if wildcard:
+                attrstr = f"filename: {file_list[found_index].split("/").pop()} | {attrstr}"
+            await message.reply(attrstr, file=discord.File(file_list[found_index]))
     else:
         await message.reply("i didnt find i t...")

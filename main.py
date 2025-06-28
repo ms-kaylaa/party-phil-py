@@ -9,7 +9,7 @@ import traceback
 
 import os
 
-prefix = "ph!"
+PREFIX = "ph!"
 class Phil(discord.Client):
     async def on_ready(self):
         print(f'Logged on as {self.user}!')
@@ -20,9 +20,9 @@ class Phil(discord.Client):
 
     async def on_message(self, message: discord.Message):
         await handle_stats(self,message)
-        if "<@1141102885472587777>" in message.content and not message.content.lower().startswith(prefix):
+        if "<@1141102885472587777>" in message.content and not message.content.lower().startswith(PREFIX):
             await message.channel.send("my name party phil")
-        if message.author.bot or not message.content.lower().startswith(prefix): return
+        if (message.author.bot and not message.author.id == 1338550487414214717) or not message.content.lower().startswith(PREFIX): return
         
         if not message.content.startswith("ph!addfile") and random.randint(0, 41) == 9: # the one constant of party phil
             await message.channel.send("Fuck you! 👎")
@@ -37,7 +37,7 @@ class Phil(discord.Client):
         if payload.channel_id == 1220096882223743077:
             allowed_smiles = [1213981788322668595, 1213976609221115904, 1225198377755611177, 1213976689499963442, 1213976726791651399, 1225199725419036802, 1225198374064619571, 1213977580978577458, 1213976671385026570, 1225199726325137408, 1225199728720085043, 1223739074590933112, 1225199730070519890]
             msg: discord.Message = await self.get_guild(payload.guild_id).get_channel(payload.channel_id).fetch_message(payload.message_id)
-            
+
             score = 0
             for reaction in msg.reactions:
                 if reaction.emoji.id in allowed_smiles or reaction.emoji.name.startswith("spr_ladyfont_"):
@@ -49,10 +49,10 @@ class Phil(discord.Client):
         
 async def handle_commands(self: Phil, message: discord.Message):
     # this is kinda a dumb way to do it
-    split = message.content.split(prefix)
+    split = message.content.split(PREFIX)
     split.pop(0) # remove prefix split
         
-    args = "".join(split).split(" ") # This is good
+    args = PREFIX.join(split).split(" ") # This is good
     command = args.pop(0)
 
     print(command, args)
@@ -92,7 +92,6 @@ async def handle_stats(self:Phil, message:discord.Message):
 
 def read_token():
     f = open("token.txt")
-
     for line in f.readlines():
         if not line.startswith("#"):
             return line
