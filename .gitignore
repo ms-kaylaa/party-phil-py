@@ -205,3 +205,8 @@ cython_debug/
 *.vsix
 ss.png
 /.vscode
+/userdata
+/pre-refactor files
+canvas.png
+canvaspre.png
+/duderoulette

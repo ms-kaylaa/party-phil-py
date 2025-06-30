@@ -3,7 +3,7 @@ import discord
 import os
 import random
 
-from globals import FILE_DIR
+from globals import USER_DIR
 
 import stat_handler
 
@@ -11,7 +11,7 @@ file_list = []
 def recursive_get_all_files(dir):
     for file in os.listdir(dir):
         #await msg.channel.send(file)
-        if os.path.isdir(dir + file + "/"):
+        if os.path.isdir(dir + file + "/") and file != "data":
             #await msg.channel.send("entered this dir ^")
             recursive_get_all_files(dir + file + "/")
             #await msg.channel.send("exited dir " + dir)
@@ -35,7 +35,7 @@ async def run(message: discord.Message, args: list[str], client: discord.Client 
                     if userr.name == arg:
                         user = userr
                         break
-                if user == None or not os.path.isdir(f"filedb/{user.id}"):
+                if user == None or not os.path.isdir(f"{USER_DIR}{user.id}"):
                     skipped.append(arg)
                     continue
                 
@@ -46,12 +46,13 @@ async def run(message: discord.Message, args: list[str], client: discord.Client 
 
             file_list = []
             for id in ids:
-                for file in os.listdir(f"filedb/{id}"):
-                    file_list.append(f"filedb/{id}/{file}")
+                for file in os.listdir(f"{USER_DIR}{id}/files"):
+                    file_list.append(f"{USER_DIR}{id}/files/{file}")
         if len(file_list) == 0:
             if len(args) > 0:
                 err_res += "\nNone of the selected users were valid; defaulting to normal file distribution"
-            recursive_get_all_files(FILE_DIR)
+            recursive_get_all_files(USER_DIR)
+            recursive_get_all_files("pre-refactor files")
         if err_res != "":
             await message.channel.send(err_res)
     
@@ -66,7 +67,7 @@ async def run(message: discord.Message, args: list[str], client: discord.Client 
             owner = client.get_user(int(owner_folder))
             owner_attr = f"{owner.display_name} ({owner.name})"
         print(file)
-        await message.reply(f"filename: {filesplit[2]} | uploader: {owner_attr}", file=discord.File(file))
+        await message.reply(f"filename: {filesplit[3]} | uploader: {owner_attr}", file=discord.File(file))
     else:
         file_list = os.listdir("C:/sou")
         stat_handler.stats["command_stats"]["story_of_undertale_rolls"] += 1

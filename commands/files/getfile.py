@@ -2,14 +2,14 @@ import discord
 
 import os
 
-from globals import FILE_DIR
+from globals import USER_DIR
 import stat_handler
 
 file_list: list[str] = []
 def recursive_get_all_files(dir):
     for file in os.listdir(dir):
         #await msg.channel.send(file)
-        if os.path.isdir(dir + file + "/"):
+        if os.path.isdir(dir + file + "/") and file != "data":
             #await msg.channel.send("entered this dir ^")
             recursive_get_all_files(dir + file + "/")
             #await msg.channel.send("exited dir " + dir)
@@ -20,7 +20,8 @@ async def run(message: discord.Message, args: list[str], client: discord.Client 
     global file_list
 
     file_list.clear()
-    recursive_get_all_files(FILE_DIR)
+    recursive_get_all_files(USER_DIR)
+    recursive_get_all_files("pre-refactor files")
     filename = " ".join(args)
 
     wildcard = len(filename.split(".")) == 1

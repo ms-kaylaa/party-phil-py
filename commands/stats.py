@@ -1,7 +1,7 @@
 import discord
 import os
 
-from globals import FILE_DIR
+from globals import USER_DIR
 import stat_handler
 
 async def run(message: discord.Message, args: list[str], client: discord.Client = None):
@@ -9,14 +9,15 @@ async def run(message: discord.Message, args: list[str], client: discord.Client 
     def recursive_get_files(dir):
         for file in os.listdir(dir):
             #await msg.channel.send(file)
-            if os.path.isdir(dir + file + "/"):
+            if os.path.isdir(dir + file + "/") and file != "data":
                 #await msg.channel.send("entered this dir ^")
                 recursive_get_files(dir + file + "/")
                 #await msg.channel.send("exited dir " + dir)
             else:
                 file_list.append(dir + file)
     
-    recursive_get_files(FILE_DIR)
+    recursive_get_files(USER_DIR)
+    recursive_get_files("pre-refactor files")
     await message.channel.send(
 f"""
 __***GENERAL STATS***__

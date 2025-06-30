@@ -2,10 +2,10 @@ import discord
 
 import os
 
-from globals import FILE_DIR
+from globals import USER_DIR
 
 async def run(message: discord.Message, args: list[str], client: discord.Client = None):
-    user_dir = FILE_DIR + str(message.author.id)
+    user_dir = f"{USER_DIR}{message.author.id}/files"
 
     filename = " ".join(args)
     path = user_dir + "/" + filename

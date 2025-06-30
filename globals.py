@@ -1,4 +1,4 @@
-FILE_DIR = "filedb/"
+USER_DIR = "userdata/"
 GEN_DIR = "gens/"
 
 trusteds = []

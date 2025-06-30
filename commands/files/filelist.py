@@ -1,4 +1,5 @@
 import discord
+from globals import USER_DIR
 
 import os
 
@@ -14,6 +15,6 @@ async def run(message: discord.Message, args: list[str], client: discord.Client 
     if id == 0:
         return await message.channel.send("That user has no uploaded files")
     
-    return await message.channel.send(f"{client.get_user(id).name}'s files\n{", ".join(os.listdir(f"filedb/{id}"))}")
+    return await message.channel.send(f"{client.get_user(id).name}'s files\n{", ".join(os.listdir(f"{USER_DIR}{id}/files/"))}")
 
     

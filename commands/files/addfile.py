@@ -1,8 +1,10 @@
 import discord
 import os
 
+from globals import USER_DIR
+
 async def run(message: discord.Message, args: list[str], client: discord.Client = None):
-    userdir = f"filedb/{str(message.author.id)}/"
+    userdir = f"{USER_DIR}{str(message.author.id)}/"
     if not os.path.exists(userdir):
         os.makedirs(userdir)
 
